@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIT Assistant: Research &amp; Learning Hub</title>
+  <meta name="description" content="AI-powered Research Assistant and C Programming Teaching Assistant for MIT AOE curriculum." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="app-sidebar">
+        <div class="sidebar-header">
+          <div class="logo-container">
+            <div class="logo-glow"></div>
+            <span class="logo-icon">⚡</span>
+            <h1>MIT Assistant</h1>
+          </div>
+          <p class="logo-subtitle">Research &amp; Learning Hub</p>
+        </div>
+
+        <nav class="mode-nav">
+          <p class="nav-title">Select Assistant Mode</p>
+          <div class="mode-item active" id="mode-ra" data-mode="ra">
+            <div class="mode-icon">🧪</div>
+            <div class="mode-info">
+              <span class="mode-title">Research Assistant</span>
+              <span class="mode-desc">Literature reviews &amp; MCP tools</span>
+            </div>
+          </div>
+          <div class="mode-item" id="mode-ta" data-mode="ta">
+            <div class="mode-icon">🎓</div>
+            <div class="mode-info">
+              <span class="mode-title">Teaching Assistant</span>
+              <span class="mode-desc">C programming chatbot (RAG)</span>
+            </div>
+          </div>
+          <div class="mode-item" id="mode-hw" data-mode="hw">
+            <div class="mode-icon">📝</div>
+            <div class="mode-info">
+              <span class="mode-title">Homework Generator</span>
+              <span class="mode-desc">Generate Q&amp;As on C topics</span>
+            </div>
+          </div>
+        </nav>
+
+        <div class="control-card">
+          <div class="card-header">
+            <h3>📚 C Course Indexer</h3>
+            <span class="status-badge" id="pdf-status">Not Indexed</span>
+          </div>
+          <p class="card-desc">Embed the "Let Us C" syllabus into ChromaDB vector store.</p>
+          <button class="primary-btn" id="index-pdf-btn">
+            <span class="btn-text">Index Syllabus PDF</span>
+            <span class="btn-spinner hidden" id="index-spinner"></span>
+          </button>
+        </div>
+
+        <div class="status-panel">
+          <div class="status-row">
+            <span class="status-label">Backend API:</span>
+            <span class="status-indicator offline" id="api-status-dot"></span>
+            <span class="status-text" id="api-status-text">Checking...</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Port:</span>
+            <span class="status-value">8000 (localhost)</span>
+          </div>
+          <button class="icon-btn" id="refresh-btn">🔄 Refresh Connection</button>
+        </div>
+      </aside>
+
+      <!-- Main Chat Area -->
+      <main class="chat-viewport">
+        <header class="chat-header">
+          <div class="active-badge" id="active-mode-badge">Research Mode</div>
+          <h2 id="active-mode-title">Scientific Literature &amp; Search Assistant</h2>
+          <p class="active-desc" id="active-mode-desc">Uses LangGraph and live MCP tools (arXiv, Tavily Search) to create comparative literature summaries.</p>
+        </header>
+
+        <div class="chat-messages" id="chat-messages-container">
+          <!-- Messages rendered by JS -->
+        </div>
+
+        <div class="thought-tracer hidden" id="thought-tracer-panel">
+          <div class="tracer-header" id="tracer-toggle">
+            <span class="tracer-title">🔍 Agent Execution Steps &amp; Tool Trace</span>
+            <span class="tracer-toggle-icon" id="tracer-arrow">▼</span>
+          </div>
+          <div class="tracer-body" id="tracer-content">
+            <p class="tracer-placeholder">Agent trace will appear here...</p>
+          </div>
+        </div>
+
+        <footer class="chat-footer">
+          <div class="input-container">
+            <textarea id="user-input" placeholder="Ask the Research Assistant..." rows="2"></textarea>
+            <div class="input-actions">
+              <div class="character-count" id="char-counter">0 characters</div>
+              <button class="send-btn" id="send-btn">
+                <span class="send-text">Generate Response</span>
+                <span class="send-icon">✦</span>
+              </button>
+            </div>
+          </div>
+          <p class="footer-note">MIT Academy of Engineering • AI Agents, RAG &amp; MCP Architecture Demo</p>
+        </footer>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
