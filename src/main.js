@@ -3,7 +3,7 @@
  *
  * Module structure:
  *   src/main.js   → app state, event wiring, render cycle
- *   src/api.js    → all HTTP calls to localhost:8000
+ *   src/api.js    → all HTTP calls to https://research-teaching-service-api-952306581103.asia-south1.run.app 
  *   src/style.css → design system
  */
 
@@ -21,10 +21,10 @@ const MODES = {
     placeholder: 'Ask the Research Assistant to search academic databases and summarize...',
     welcomeIcon: '🧬',
     suggestions: [
-      { label: 'Academic Search',   text: 'Search arXiv for recent papers on LLM agents security models' },
-      { label: 'Web Comparison',    text: 'Summarize differences between Gemini 1.5 and Llama 3 architectures' },
+      { label: 'Academic Search', text: 'Search arXiv for recent papers on LLM agents security models' },
+      { label: 'Web Comparison', text: 'Summarize differences between Gemini 1.5 and Llama 3 architectures' },
       { label: 'Literature Review', text: 'Create a summary of modern vector database indexing algorithms' },
-      { label: 'Deep Extraction',   text: 'Extract and summarize the Model Context Protocol specification' },
+      { label: 'Deep Extraction', text: 'Extract and summarize the Model Context Protocol specification' },
     ],
   },
   ta: {
@@ -36,8 +36,8 @@ const MODES = {
     welcomeIcon: '🎓',
     suggestions: [
       { label: 'Memory Mgmt', text: 'Explain dynamic memory allocation using malloc and free in C' },
-      { label: 'Data Types',  text: 'What is the difference between a structure and a union in C?' },
-      { label: 'Pointers',    text: 'Explain pointers and why memory leaks occur' },
+      { label: 'Data Types', text: 'What is the difference between a structure and a union in C?' },
+      { label: 'Pointers', text: 'Explain pointers and why memory leaks occur' },
       { label: 'Course Scope', text: 'What C libraries are covered in the MIT AOE curriculum?' },
     ],
   },
@@ -49,10 +49,10 @@ const MODES = {
     placeholder: 'Specify a C topic to generate a homework sheet (e.g. Arrays, Pointers, Recursion)...',
     welcomeIcon: '📝',
     suggestions: [
-      { label: 'Array Quiz',     text: 'Generate homework questions for Multidimensional Arrays' },
-      { label: 'Loop Control',   text: 'Create a test with solutions for while and for loops' },
-      { label: 'Recursion',      text: 'Generate C homework on recursive functions and stack memory' },
-      { label: 'File Handling',  text: 'Generate homework questions on fopen, fread, and fwrite' },
+      { label: 'Array Quiz', text: 'Generate homework questions for Multidimensional Arrays' },
+      { label: 'Loop Control', text: 'Create a test with solutions for while and for loops' },
+      { label: 'Recursion', text: 'Generate C homework on recursive functions and stack memory' },
+      { label: 'File Handling', text: 'Generate homework questions on fopen, fread, and fwrite' },
     ],
   },
 };
@@ -131,7 +131,7 @@ function parseMarkdown(raw) {
 
   // Restore blocks
   codeBlocks.forEach((b, i) => { s = s.replace(`§CODE§${i}§`, b); });
-  ul.forEach((b, i)        => { s = s.replace(`§UL§${i}§`, b); });
+  ul.forEach((b, i) => { s = s.replace(`§UL§${i}§`, b); });
 
   return s;
 }
@@ -177,7 +177,7 @@ function renderMessages() {
   history.forEach(({ role, content, timestamp }) => {
     const isUser = role === 'user';
     const modeKey = state.currentMode;
-    const avatar   = isUser ? '👤' : modeKey === 'ra' ? '🧬' : modeKey === 'ta' ? '🎓' : '📝';
+    const avatar = isUser ? '👤' : modeKey === 'ra' ? '🧬' : modeKey === 'ta' ? '🎓' : '📝';
     const bodyHTML = isUser ? `<p>${escapeHTML(content)}</p>` : parseMarkdown(content);
 
     const div = el('div', `message ${role}`);
@@ -196,7 +196,7 @@ function renderMessages() {
 
 function renderTrace() {
   const history = state.traceHistories[state.currentMode];
-  const panel   = $('thought-tracer-panel');
+  const panel = $('thought-tracer-panel');
   const content = $('tracer-content');
 
   if (!history.length) {
@@ -238,14 +238,14 @@ function switchMode(modeKey) {
   $(`mode-${modeKey}`).classList.add('active');
 
   // Header
-  const meta   = MODES[modeKey];
-  const badge  = $('active-mode-badge');
+  const meta = MODES[modeKey];
+  const badge = $('active-mode-badge');
   badge.textContent = meta.badge;
   badge.style.background = meta.badgeStyle.bg;
-  badge.style.color      = meta.badgeStyle.color;
+  badge.style.color = meta.badgeStyle.color;
   badge.style.borderColor = meta.badgeStyle.color;
   $('active-mode-title').textContent = meta.title;
-  $('active-mode-desc').textContent  = meta.desc;
+  $('active-mode-desc').textContent = meta.desc;
 
   // Input
   const ta = $('user-input');
@@ -261,19 +261,19 @@ function switchMode(modeKey) {
 // ─── Backend Health ───────────────────────────────────────────────────────────
 
 async function checkBackendHealth() {
-  const dot  = $('api-status-dot');
+  const dot = $('api-status-dot');
   const text = $('api-status-text');
-  dot.className  = 'status-indicator offline';
+  dot.className = 'status-indicator offline';
   text.className = 'status-text';
   text.textContent = 'Checking...';
 
   try {
     await checkHealth();
-    dot.className  = 'status-indicator online';
+    dot.className = 'status-indicator online';
     text.className = 'status-text online';
     text.textContent = 'Online';
   } catch {
-    dot.className  = 'status-indicator offline';
+    dot.className = 'status-indicator offline';
     text.className = 'status-text offline';
     text.textContent = 'Offline';
   }
@@ -282,24 +282,24 @@ async function checkBackendHealth() {
 // ─── PDF Ingestion ───────────────────────────────────────────────────────────
 
 async function handleIndexPDF() {
-  const btn     = $('index-pdf-btn');
+  const btn = $('index-pdf-btn');
   const spinner = $('index-spinner');
-  const badge   = $('pdf-status');
+  const badge = $('pdf-status');
 
   btn.disabled = true;
   spinner.classList.remove('hidden');
   badge.textContent = 'Indexing...';
-  badge.className   = 'status-badge';
+  badge.className = 'status-badge';
 
   try {
     await embedPDF();
     badge.textContent = 'Indexed';
-    badge.className   = 'status-badge indexed';
+    badge.className = 'status-badge indexed';
     alert('✅ Syllabus PDF embedded successfully! ChromaDB initialized.');
   } catch (err) {
     badge.textContent = 'Failed';
-    badge.className   = 'status-badge';
-    alert(`❌ Indexing failed.\n\nMake sure the backend is running at http://localhost:8000\n\n${err.message}`);
+    badge.className = 'status-badge';
+    alert(`❌ Indexing failed.\n\nMake sure the backend is running at https://research-teaching-service-api-952306581103.asia-south1.run.app\n\n${err.message}`);
   } finally {
     btn.disabled = false;
     spinner.classList.add('hidden');
@@ -309,7 +309,7 @@ async function handleIndexPDF() {
 // ─── Query Submission ────────────────────────────────────────────────────────
 
 async function sendQuery() {
-  const ta    = $('user-input');
+  const ta = $('user-input');
   const query = ta.value.trim();
   if (!query || state.isProcessing) return;
 
@@ -325,7 +325,7 @@ async function sendQuery() {
   renderMessages();
 
   // Loading bubble
-  const container  = $('chat-messages-container');
+  const container = $('chat-messages-container');
   const loadingDiv = el('div', 'message ai loading', `
     <div class="message-avatar">⚙️</div>
     <div class="message-bubble"><div class="dot-flashing"></div></div>
@@ -347,7 +347,7 @@ async function sendQuery() {
 
   try {
     const fetchFn = MODE_FETCH[state.currentMode];
-    const data    = await fetchFn(query);
+    const data = await fetchFn(query);
 
     $('loading-msg')?.remove();
 
@@ -366,7 +366,7 @@ async function sendQuery() {
     $('loading-msg')?.remove();
     state.chatHistories[state.currentMode].push({
       role: 'ai',
-      content: `❌ **Error connecting to backend**\n\nCould not reach \`localhost:8000\`. Make sure FastAPI is running.\n\n*Details:* ${err.message}`,
+      content: `❌ **Error connecting to backend**\n\nCould not reach \`https://research-teaching-service-api-952306581103.asia-south1.run.app \`. Make sure FastAPI is running.\n\n*Details:* ${err.message}`,
       timestamp: new Date().toLocaleTimeString(),
     });
     addTraceStep('❌', 'Request failed', err.stack || err.message);
@@ -390,8 +390,8 @@ function parseLangGraphResponse(workflow) {
   let finalContent = '';
 
   messages.forEach((msg) => {
-    const type      = msg.type || (Array.isArray(msg.lc_id) ? msg.lc_id[2] : '');
-    const content   = msg.content || '';
+    const type = msg.type || (Array.isArray(msg.lc_id) ? msg.lc_id[2] : '');
+    const content = msg.content || '';
     const toolCalls = msg.tool_calls || [];
 
     if (type === 'ai' || type === 'AIMessage') {

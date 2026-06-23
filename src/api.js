@@ -1,9 +1,9 @@
 /**
  * api.js — MIT Assistant API client
- * Thin wrapper around the FastAPI backend running at localhost:8000
+ * Thin wrapper around the deployed FastAPI backend on Cloud Run.
  */
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://research-teaching-service-api-952306581103.asia-south1.run.app';
 
 /**
  * Check backend health.
